@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -95,32 +95,8 @@ body {
 
 /* Utilities */
 
-@utility sidebar-link {
-  @apply flex gap-4 items-center text-[14px] text-surface-200 font-normal py-1 md:p-3 2xl:p-4 rounded-lg justify-start xl:justify-start;
-}
-
-@utility mobile-link {
-  @apply max-md:flex flex-col gap-1 items-center justify-center text-[8px] text-surface-200 font-normal px-6 py-2 rounded-lg;
-}
-
-@utility sidebar {
-  @apply sticky left-0 top-0 flex h-screen w-fit flex-col justify-between bg-darkblue pt-8 text-surface-100 max-md:hidden sm:p-4 xl:p-6 2xl:w-[355px];
-}
-
-@utility mobile-nav {
-  @apply sticky left-0 top-0 hidden h-fit w-full justify-between bg-darkblue text-surface-100 p-4 max-md:flex sm:p-4;
-}
-
-@utility mobile-top {
-  @apply sticky left-0 top-0 hidden md:flex h-fit w-full bg-darkblue text-surface-100 p-3 max-md:flex sm:p-4;
-}
-
 @utility flex-center {
   @apply flex items-center justify-center;
-}
-
-@utility bg-gradient {
-  @apply bg-linear-to-b from-lightblue to-darkblue;
 }
 
 :root {

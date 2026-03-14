@@ -88,6 +88,4 @@ npm run lint     # lint code
 
 ## 📄 Documentation
 
-See:
-
-- `README`
+- The onboarding process is made to persist using server engine, by this users can return to the exact step of their onboarding processes, this is in cases of bad network, somehow the browser is closed or a new browser is open on the same user email, the data is persisted always.

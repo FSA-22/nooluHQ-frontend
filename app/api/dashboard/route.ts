@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}dashboard-data/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}dashboard/`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

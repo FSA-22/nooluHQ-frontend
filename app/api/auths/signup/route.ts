@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const result = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}accounts/signup/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}register`,
       body,
       {
         headers: {
