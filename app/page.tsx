@@ -1,8 +1,8 @@
 const Home = () => {
   return (
-    <div className="flex-center w-full h-screen text-4xl text-blue-500">
-      Home
-    </div>
+    <main className="flex-center w-full h-screen title-text">
+      Landing Page Here
+    </main>
   );
 };
 

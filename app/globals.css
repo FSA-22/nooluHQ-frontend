@@ -99,6 +99,15 @@ body {
   @apply flex items-center justify-center;
 }
 
+@utility title-text {
+  @apply font-medium tracking-tight max-sm:text-xl sm:text-4xl  text-darkGrey;
+}
+
+/* description text */
+@utility desc-text {
+  @apply font-normal max-sm:text-sm sm:text-lg text-lightGrey;
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
