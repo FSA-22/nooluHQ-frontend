@@ -1,0 +1,29 @@
+import OnboardingStepper from '@/components/onboarding/OnboardingStepper';
+import AppLogo from '@/components/shared/AppLogo';
+import Textbox from '@/components/shared/Textbox';
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <main className=" bg-bgPrimary h-screen">
+      <div className="px-6 w-full bg-white py-4">
+        <AppLogo />
+      </div>
+      <div className="flex flex-col h-full px-6 w-full sm:flex-row">
+        <div className="flex-1 h-full">
+          <div>
+            <Textbox
+              title="Let's get you set up in just 4 steps"
+              desc="We'll keep short and simple, just what we need to personalize your experience"
+            />
+            <OnboardingStepper currentStep={2} />
+          </div>
+        </div>
+        <div className="flex-1/2"> {children}</div>
+      </div>
+    </main>
+  );
+}

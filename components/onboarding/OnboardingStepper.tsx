@@ -1,41 +1,43 @@
 // components/OnboardingStepper.tsx
 import { ONBOARDING_STEPS } from '@/constants/onboardingSteps';
+import { StepperProps } from '@/types';
 
-interface StepperProps {
-  currentStep: number;
-}
-
-export default function OnboardingStepper({ currentStep }: StepperProps) {
+const OnboardingStepper = ({ currentStep }: StepperProps) => {
   return (
-    <div className="flex flex-col items-start gap-4">
-      {ONBOARDING_STEPS.map((step, idx) => {
-        const isActive = step.id === currentStep;
-        const isCompleted = step.id < currentStep;
+    <div className="flex flex-col h-full items-start gap-4">
+      {ONBOARDING_STEPS.map(({ title, id }) => {
+        const isActive = id === currentStep;
+        const isCompleted = id < currentStep;
         return (
-          <div key={step.id} className="flex items-center gap-2">
+          <div key={id} className="flex items-center gap-3">
             <div
-              className={`w-6 h-6 flex items-center justify-center rounded-full border-2 ${
+              className={`w-6 h-6 flex items-center justify-center rounded-full border ${
                 isActive
-                  ? 'desc-text'
+                  ? 'desc-text text-xs bg-primaryLight text-white '
                   : isCompleted
-                    ? 'bg-green-500 text-white'
-                    : 'border-gray-300'
+                    ? 'desc-text text-xs bg-primaryLight text-white '
+                    : 'border border-darkGrey'
               }`}
             >
-              {step.id}
+              {id}
             </div>
-            <div className="flex flex-col">
-              <span className={`${isActive ? 'font-bold' : ''}`}>
-                {step.title}
+            <div className="flex flex-col desc-text">
+              <span
+                className={`${isActive ? 'text-primaryLight' : isCompleted ? 'text-primaryLight' : ''}`}
+              >
+                {title}
               </span>
-              <span className="text-sm text-gray-500">{step.description}</span>
+              {/* We might need descriptive words later -- destructure description from ONBOARDING_STEPS */}
+              {/* <span className="text-[8px] ">{description}</span> */}
             </div>
-            {idx < ONBOARDING_STEPS.length - 1 && (
-              <div className="absolute h-10 border-l-2 border-gray-300 ml-3 -mt-1"></div>
+            {id < ONBOARDING_STEPS.length && (
+              <div className="absolute h-4 border-l border-darkGrey ml-3 mt-11" />
             )}
           </div>
         );
       })}
     </div>
   );
-}
+};
+
+export default OnboardingStepper;

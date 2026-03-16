@@ -1,5 +1,13 @@
+import VerifyEmailPage from '@/components/onboarding/ConfirmEmail';
+
 const ConfirmEmail = () => {
-  return <div>ConfirmEmail</div>;
+  return (
+    <section className="home">
+      <div className="home-container">
+        <VerifyEmailPage />
+      </div>
+    </section>
+  );
 };
 
 export default ConfirmEmail;

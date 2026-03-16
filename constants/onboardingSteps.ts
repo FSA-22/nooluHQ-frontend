@@ -20,3 +20,31 @@ export const ONBOARDING_STEPS = [
     description: 'Pick your main focus for the app',
   },
 ];
+
+export const FOCUS_CARDS: FocusCard[] = [
+  {
+    id: "productivity",
+    title: "Productivity",
+    description: "Focus on managing your time and tasks.",
+    icon: "/icons/productivity.svg",
+  },
+  {
+    id: "collaboration",
+    title: "Collaboration",
+    description: "Improve team communication and workflow.",
+    icon: "/icons/collaboration.svg",
+  },
+  {
+    id: "analytics",
+    title: "Analytics",
+    description: "Track metrics and growth insights.",
+    icon: "/icons/analytics.svg",
+  },
+  {
+    id: "innovation",
+    title: "Innovation",
+    description: "Focus on new ideas and projects.",
+    icon: "/icons/innovation.svg",
+  },
+];
+
