@@ -21,30 +21,29 @@ export const ONBOARDING_STEPS = [
   },
 ];
 
-export const FOCUS_CARDS: FocusCard[] = [
+export const FOCUS_CARDS = [
   {
-    id: "productivity",
-    title: "Productivity",
-    description: "Focus on managing your time and tasks.",
-    icon: "/icons/productivity.svg",
+    id: 'productivity',
+    title: 'Productivity',
+    description: 'Focus on managing your time and tasks.',
+    icon: '/icons/productivity.svg',
   },
   {
-    id: "collaboration",
-    title: "Collaboration",
-    description: "Improve team communication and workflow.",
-    icon: "/icons/collaboration.svg",
+    id: 'collaboration',
+    title: 'Collaboration',
+    description: 'Improve team communication and workflow.',
+    icon: '/icons/collaboration.svg',
   },
   {
-    id: "analytics",
-    title: "Analytics",
-    description: "Track metrics and growth insights.",
-    icon: "/icons/analytics.svg",
+    id: 'analytics',
+    title: 'Analytics',
+    description: 'Track metrics and growth insights.',
+    icon: '/icons/analytics.svg',
   },
   {
-    id: "innovation",
-    title: "Innovation",
-    description: "Focus on new ideas and projects.",
-    icon: "/icons/innovation.svg",
+    id: 'innovation',
+    title: 'Innovation',
+    description: 'Focus on new ideas and projects.',
+    icon: '/icons/innovation.svg',
   },
 ];
-

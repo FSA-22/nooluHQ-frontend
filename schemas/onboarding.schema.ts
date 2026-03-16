@@ -21,38 +21,26 @@ export const profileSchema = z.object({
 
 export type ProfileInput = z.infer<typeof profileSchema>;
 
-
 export const profileFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, "Please enter your name"),
+  name: z.string().min(2, 'Please enter your name'),
 
-  role: z
-    .string()
-    .min(2, "Please enter your role"),
+  role: z.string().min(2, 'Please enter your role'),
 
-  teamSize: z.enum([
-    "solo",
-    "2-10",
-    "11-50",
-    "50+"
-  ], {
-    required_error: "Select a team size",
+  teamSize: z.enum(['solo', '2-10', '11-50', '50+'], {
+    message: 'Please select team size',
   }),
 });
 
 export const workspaceFormSchema = z.object({
   workspaceName: z
     .string()
-    .min(2, "Workspace name must be at least 2 characters"),
+    .min(2, 'Workspace name must be at least 2 characters'),
 });
 
 export const teammateFormSchema = z.object({
-  emails: z
-    .array(z.string().email("Invalid email"))
-    .optional(),
+  emails: z.array(z.string().email('Invalid email')).optional(),
 });
 
 export const focusFormSchema = z.object({
-  focusId: z.string().min(1, "Please select a focus area"),
+  focusId: z.string().min(1, 'Please select a focus area'),
 });

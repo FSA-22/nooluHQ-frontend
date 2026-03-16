@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist_Mono, Montserrat, Geist } from 'next/font/google';
+import { Geist_Mono, Montserrat } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 
