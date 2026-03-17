@@ -2,18 +2,12 @@
 
 import * as z from 'zod';
 import { accountFormSchema } from '@/schemas/onboarding.schema';
-import { OnboardingFormProps } from '@/types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import {
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import {
   Field,
@@ -29,9 +23,8 @@ import { Input } from '@/components/ui/input';
 import Textbox from '../shared/Textbox';
 import Image from 'next/image';
 import { toast } from 'sonner';
-import { useState } from 'react';
 
-const AccountForm = ({ page }: OnboardingFormProps) => {
+const AccountForm = () => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof accountFormSchema>>({
@@ -48,7 +41,7 @@ const AccountForm = ({ page }: OnboardingFormProps) => {
 
   const { isSubmitting } = form.formState;
 
-  async function onSubmit(data: z.infer<typeof accountFormSchema>) {
+  const onSubmit = async (data: z.infer<typeof accountFormSchema>) => {
     try {
       await registerAccount(data);
 
@@ -59,7 +52,7 @@ const AccountForm = ({ page }: OnboardingFormProps) => {
     } catch (error: any) {
       toast.error(error.message);
     }
-  }
+  };
   return (
     <section className="w-full mx-auto my-auto  max-w-md">
       {/* step indicator */}
@@ -177,6 +170,12 @@ const AccountForm = ({ page }: OnboardingFormProps) => {
           >
             Create account
           </Button>
+          <div className="flex flex-col w-full">
+            <div>
+              Already have an account ?{' '}
+              <span className="text-primaryNorma desc-text text-xs">login</span>
+            </div>
+          </div>
 
           {/* OR DIVIDER */}
           <div className="flex items-center w-full gap-4">
@@ -184,7 +183,6 @@ const AccountForm = ({ page }: OnboardingFormProps) => {
             <span className="desc-text text-sm">OR</span>
             <div className="flex-1 border-t border-gray-200" />
           </div>
-
           {/* GOOGLE BUTTON */}
           <Button
             type="button"

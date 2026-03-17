@@ -4,7 +4,7 @@ const Account = () => {
   return (
     <section className="home">
       <div className="home-container flex-center">
-        <OnboardingForm page="account" />
+        <OnboardingForm />
       </div>
     </section>
   );

@@ -1,10 +1,9 @@
-import OnboardingForm from '@/components/onboarding/Focus';
-
+import Goal from '@/components/onboarding/Focus';
 const Focus = () => {
   return (
     <section className="home">
       <div className="home-container flex-center">
-        < Focus />
+        <Goal />
       </div>
     </section>
   );

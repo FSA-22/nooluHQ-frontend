@@ -1,10 +1,10 @@
-import OnboardingForm from '@/components/onboarding/AccountForm';
+import ProfileComponent from '@/components/onboarding/Profile';
 
 const Profile = () => {
   return (
     <section className="home">
       <div className="home-container flex-center">
-        <OnboardingForm page="Profile" />
+        <ProfileComponent />
       </div>
     </section>
   );

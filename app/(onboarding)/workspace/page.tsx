@@ -1,10 +1,10 @@
-import OnboardingForm from '@/components/onboarding/AccountForm';
+import WorkspaceComponent from '@/components/onboarding/Workspace';
 
 const Workspace = () => {
   return (
     <section className="home">
       <div className="home-container flex-center">
-        <OnboardingForm page="Workspace" />
+        <WorkspaceComponent />
       </div>
     </section>
   );

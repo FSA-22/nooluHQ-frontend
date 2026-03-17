@@ -22,7 +22,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-const Profile = () => {
+const ProfileComponent = () => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof profileFormSchema>>({
@@ -162,4 +162,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileComponent;

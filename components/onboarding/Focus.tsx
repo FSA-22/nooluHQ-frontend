@@ -17,14 +17,7 @@ import { Button } from '@/components/ui/button';
 
 import { FOCUS_CARDS } from '@/constants/onboardingSteps';
 
-interface FocusCard {
-  id: string;
-  title: string;
-  description: string;
-  icon: string; // path to svg
-}
-
-const Focus = () => {
+const Goal = () => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof focusFormSchema>>({
@@ -36,19 +29,19 @@ const Focus = () => {
 
   const { isSubmitting } = form.formState;
 
-  async function onSubmit() {
+  const onSubmit = async () => {
     if (!selectedFocus) {
       toast.error('Please select a focus area or skip for later');
       return;
     }
 
     try {
-      const res = await fetch('/api/onboarding/focus', {
-        method: 'POST',
-        body: JSON.stringify({ focusId: selectedFocus }),
-      });
+      // const res = await fetch('/api/onboarding/focus', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ focusId: selectedFocus }),
+      // });
 
-      if (!res.ok) throw new Error('Failed to save focus');
+      // if (!res.ok) throw new Error('Failed to save focus');
 
       toast.success('Focus saved');
 
@@ -56,11 +49,11 @@ const Focus = () => {
     } catch (err: any) {
       toast.error(err.message);
     }
-  }
+  };
 
-  function skip() {
+  const skip = () => {
     router.push('/dashboard');
-  }
+  };
 
   return (
     <section className="mx-auto max-w-md w-full">
@@ -118,4 +111,4 @@ const Focus = () => {
   );
 };
 
-export default Focus;
+export default Goal;

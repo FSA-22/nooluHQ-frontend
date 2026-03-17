@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -52,7 +50,7 @@ export default function VerifyEmailPage() {
     }
   }
 
-  function handlePaste(e: React.ClipboardEvent) {
+  const handlePaste = (e: React.ClipboardEvent) => {
     const paste = e.clipboardData.getData('text').trim();
 
     if (!/^\d{6}$/.test(paste)) return;
@@ -61,9 +59,9 @@ export default function VerifyEmailPage() {
     setOtp(newOtp);
 
     inputsRef.current[OTP_LENGTH - 1]?.focus();
-  }
+  };
 
-  async function handleSubmit() {
+  const handleSubmit = async () => {
     const code = otp.join('');
 
     if (code.length !== OTP_LENGTH) {
@@ -75,10 +73,10 @@ export default function VerifyEmailPage() {
       setIsSubmitting(true);
 
       // call backend
-      await fetch('/api/auth/verify-email', {
-        method: 'POST',
-        body: JSON.stringify({ code }),
-      });
+      // await fetch('/api/auth/verify-email', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ code }),
+      // });
 
       toast.success('Email verified');
 
@@ -88,7 +86,7 @@ export default function VerifyEmailPage() {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   function resendCode() {
     if (timer > 0) return;
@@ -98,9 +96,9 @@ export default function VerifyEmailPage() {
     toast.success('Code resent');
 
     // call resend endpoint
-    fetch('/api/auth/resend-code', {
-      method: 'POST',
-    });
+    // fetch('/api/auth/resend-code', {
+    //   method: 'POST',
+    // });
   }
 
   return (
