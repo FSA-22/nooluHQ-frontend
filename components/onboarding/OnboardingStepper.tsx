@@ -1,10 +1,10 @@
 // components/OnboardingStepper.tsx
-import { ONBOARDING_STEPS } from '@/constants/onboardingSteps';
+import { ONBOARDING_STEPS } from '@/constants';
 import { StepperProps } from '@/types';
 
 const OnboardingStepper = ({ currentStep }: StepperProps) => {
   return (
-    <div className="flex flex-col h-full items-start gap-4">
+    <div className="flex flex-col h-full items-start mt-4 gap-6">
       {ONBOARDING_STEPS.map(({ title, id }) => {
         const isActive = id === currentStep;
         const isCompleted = id < currentStep;
@@ -21,7 +21,7 @@ const OnboardingStepper = ({ currentStep }: StepperProps) => {
             >
               {id}
             </div>
-            <div className="flex flex-col desc-text">
+            <div className="flex flex-col desc-text font-medium text-sm">
               <span
                 className={`${isActive ? 'text-primaryLight' : isCompleted ? 'text-primaryLight' : ''}`}
               >
@@ -31,7 +31,7 @@ const OnboardingStepper = ({ currentStep }: StepperProps) => {
               {/* <span className="text-[8px] ">{description}</span> */}
             </div>
             {id < ONBOARDING_STEPS.length && (
-              <div className="absolute h-4 border-l border-darkGrey ml-3 mt-11" />
+              <div className="absolute h-5 border-l border-darkGrey ml-3 mt-12" />
             )}
           </div>
         );

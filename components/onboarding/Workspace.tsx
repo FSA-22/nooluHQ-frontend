@@ -39,16 +39,11 @@ const WorkspaceComponent = () => {
 
   async function onSubmit(values: z.infer<typeof workspaceFormSchema>) {
     try {
-      const res = await fetch('/api/onboarding/workspace', {
-        method: 'POST',
-        body: JSON.stringify(values),
-      });
-
-      if (!res.ok) throw new Error('Failed to create workspace');
-
       toast.success('Workspace created');
 
-      router.push('/onboarding/goal');
+      console.log('workspace values', values);
+
+      router.push('/focus');
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -60,19 +55,19 @@ const WorkspaceComponent = () => {
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-1 text-sm font-medium"
+          className="flex items-center gap-1 desc-text text-sm"
         >
           <ChevronLeft size={18} />
           Tell us about you
         </button>
 
-        <span className="text-sm text-muted-foreground">3/4</span>
+        <span className="desc-text text-sm">3/4</span>
       </div>
 
       {/* TEXTBOX */}
       <Textbox
         title="Create your workspace"
-        desc="Your workspace is where your team and projects will live."
+        desc="Name your workspace and invite teammates (if you'd like) you ca always add more later, we'll keep things flexible."
       />
 
       {/* FORM */}
@@ -83,12 +78,14 @@ const WorkspaceComponent = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>What's the name of your workspace?</FieldLabel>
+                <FieldLabel className="text-darkGrey">
+                  What&apos;s the name of your workspace?
+                </FieldLabel>
 
                 <Input
                   {...field}
-                  placeholder="e.g. BizEaze"
-                  className="input-field"
+                  placeholder="e.g... Nexa team"
+                  className="input-field h-11"
                 />
 
                 {fieldState.error && <FieldError errors={[fieldState.error]} />}
@@ -100,7 +97,7 @@ const WorkspaceComponent = () => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-6 active:scale-[0.98]"
+          className="onboarding-button-primary bg-primaryNorma"
         >
           {isSubmitting ? 'Creating...' : 'Continue'}
         </Button>

@@ -100,7 +100,7 @@ body {
 }
 
 @utility title-text {
-  @apply font-medium tracking-tight max-sm:text-xl sm:text-4xl  text-darkGrey;
+  @apply font-medium tracking-tight max-sm:text-xl sm:text-3xl  text-darkGrey;
 }
 
 /* description text */
@@ -126,6 +126,10 @@ body {
 
 @utility onboarding-button-primary {
   @apply w-full bg-primaryNorma hover:bg-primaryLight text-white py-5 active:scale-[0.98] rounded;
+}
+
+@utility onboarding-button-secondary {
+  @apply text-primaryNorma desc-text text-sm font-medium hover:text-primaryDeep hover:cursor-pointer active:text-lg;
 }
 
 :root {
