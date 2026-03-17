@@ -1,21 +1,22 @@
+import axios from 'axios';
+
 export async function registerAccount(data: {
   email: string;
   password: string;
   confirmPassword: string;
 }) {
-  const res = await fetch('/api/auths/account', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
+  try {
+    const res = await axios.post('/api/v1/auths/account', data, {
+      withCredentials: true,
+    });
 
-  const result = await res.json();
+    console.log('Registered:', res.data);
 
-  if (!res.ok) {
-    throw new Error(result.message || 'Registration failed');
+    return res.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Registration failed');
+    }
+    throw new Error('Registration failed');
   }
-
-  return result;
 }

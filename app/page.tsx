@@ -1,7 +1,7 @@
 const Home = () => {
   return (
-    <main className="flex-center w-full h-screen title-text">
-      Landing Page Here
+    <main className="flex-center flex-col w-full min-h-screen title-text">
+      <div className="">Landing Page</div>
     </main>
   );
 };

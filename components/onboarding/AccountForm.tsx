@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input';
 import Textbox from '../shared/Textbox';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 const AccountForm = () => {
   const router = useRouter();
@@ -42,19 +43,21 @@ const AccountForm = () => {
   const { isSubmitting } = form.formState;
 
   const onSubmit = async (data: z.infer<typeof accountFormSchema>) => {
+    console.log(data, 'data');
+
     try {
       await registerAccount(data);
 
       toast.success('Account created successfully');
       form.reset();
 
-      router.push('/verify-email');
+      router.push('/confirm-email');
     } catch (error: any) {
       toast.error(error.message);
     }
   };
   return (
-    <section className="w-full mx-auto my-auto  max-w-md">
+    <section className="w-full mx-auto my-auto py-8 max-w-md">
       {/* step indicator */}
       <div className="w-full flex justify-end">
         <span className="desc-text text-xs mt-6 text-darkGrey">1/4</span>
@@ -170,15 +173,40 @@ const AccountForm = () => {
           >
             Create account
           </Button>
-          <div className="flex flex-col w-full">
-            <div>
-              Already have an account ?{' '}
-              <span className="text-primaryNorma desc-text text-xs">login</span>
+          <div className="flex mx-auto text-center flex-col w-full">
+            <div className="w-full mx-auto flex flex-col text-xs space-y-1">
+              <div className="flex-center gap-1">
+                Already have an account?
+                <span className="text-primaryNorma desc-text text-xs">
+                  Login
+                </span>
+              </div>
+              <div className="flex-center w-full desc-text text-xs">
+                By creating an account. I agree to MayK's AI
+                <Link
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=" text-primaryNorma ml-1 text-xs"
+                >
+                  Terms of Use
+                </Link>
+                and
+                <Link
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=" text-primaryNorma text-xs"
+                >
+                  {' '}
+                  Privacy Policy
+                </Link>
+              </div>
             </div>
           </div>
 
           {/* OR DIVIDER */}
-          <div className="flex items-center w-full gap-4">
+          <div className="flex items-center w-xs mx-auto gap-4">
             <div className="flex-1 border-t border-gray-200" />
             <span className="desc-text text-sm">OR</span>
             <div className="flex-1 border-t border-gray-200" />

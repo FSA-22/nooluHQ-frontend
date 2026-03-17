@@ -40,36 +40,29 @@ const ProfileComponent = () => {
 
   async function onSubmit(values: z.infer<typeof profileFormSchema>) {
     try {
-      const res = await fetch('/api/onboarding/profile', {
-        method: 'POST',
-        body: JSON.stringify(values),
-      });
-
-      if (!res.ok) throw new Error('Failed to save profile');
-
       toast.success('Profile saved');
 
-      router.push('/onboarding/workspace');
+      router.push('/workspace');
     } catch (error: any) {
       toast.error(error.message);
     }
   }
 
   return (
-    <section className="mx-auto max-w-md w-full">
+    <section className="mx-auto max-w-md w-full h-full my-auto py-8">
       {/* STEP INDICATOR */}
-      <div className="flex justify-end mb-6">
-        <span className="text-sm text-muted-foreground">2/4</span>
+      <div className="flex justify-end">
+        <span className="text-sm desc-text">2/4</span>
       </div>
 
       {/* TEXT HEADER */}
       <Textbox
-        title="Tell us about yourself"
-        desc="This helps us personalize your workspace experience."
+        title="Who's joining us?"
+        desc="We'd love to know your name and role so that we can tailor the experience to know how you work best, whether you're solo or with a team."
       />
 
       {/* FORM */}
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-4">
         <FieldGroup>
           {/* NAME */}
           <Controller
@@ -81,8 +74,8 @@ const ProfileComponent = () => {
 
                 <Input
                   {...field}
-                  placeholder="Enter your name"
-                  className="input-field"
+                  placeholder="eg.. Orimadegun Promise"
+                  className="input-field h-11"
                 />
 
                 {fieldState.error && <FieldError errors={[fieldState.error]} />}
@@ -96,12 +89,12 @@ const ProfileComponent = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>What's your role?</FieldLabel>
+                <FieldLabel>What&apos;s your role?</FieldLabel>
 
                 <Input
                   {...field}
-                  placeholder="Founder, Developer, Designer..."
-                  className="input-field"
+                  placeholder="eg.. Product Designer"
+                  className="input-field h-11"
                 />
 
                 {fieldState.error && <FieldError errors={[fieldState.error]} />}
@@ -121,24 +114,28 @@ const ProfileComponent = () => {
               <RadioGroup
                 value={field.value}
                 onValueChange={field.onChange}
-                className="mt-4 space-y-3"
+                className=" space-y-3 text-xs"
               >
                 <div className="flex items-center space-x-3">
-                  <RadioGroupItem value="solo" id="solo" />
+                  <RadioGroupItem
+                    value="solo"
+                    id="solo"
+                    className=" active:bg-primaryNorma"
+                  />
                   <label htmlFor="solo">Just me</label>
                 </div>
 
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="2-10" id="team2" />
                   <label htmlFor="team2">2 - 10 teammates</label>
                 </div>
 
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="11-50" id="team3" />
                   <label htmlFor="team3">11 - 50 teammates</label>
                 </div>
 
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="50+" id="team4" />
                   <label htmlFor="team4">50+ teammates</label>
                 </div>
@@ -153,7 +150,7 @@ const ProfileComponent = () => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-6 active:scale-[0.98]"
+          className="onboarding-button-primary bg-primaryNorma"
         >
           {isSubmitting ? 'Saving...' : 'Continue'}
         </Button>

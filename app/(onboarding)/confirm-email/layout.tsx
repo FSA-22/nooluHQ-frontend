@@ -1,5 +1,4 @@
 import OnboardingStepper from '@/components/onboarding/OnboardingStepper';
-import AppLogo from '@/components/shared/AppLogo';
 import Textbox from '@/components/shared/Textbox';
 
 export default function RootLayout({
@@ -9,9 +8,6 @@ export default function RootLayout({
 }>) {
   return (
     <main className=" bg-bgPrimary h-screen">
-      <div className="px-6 w-full bg-white py-4">
-        <AppLogo />
-      </div>
       <div className="flex flex-col h-full px-6 w-full sm:flex-row">
         <div className="flex-1 h-full">
           <div>

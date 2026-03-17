@@ -1,10 +1,10 @@
-import VerifyEmailPage from '@/components/onboarding/ConfirmEmail';
+import VerifyEmail from '@/components/onboarding/ConfirmEmail';
 
 const ConfirmEmail = () => {
   return (
     <section className="home">
       <div className="home-container">
-        <VerifyEmailPage />
+        <VerifyEmail />
       </div>
     </section>
   );
