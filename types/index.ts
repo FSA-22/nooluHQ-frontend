@@ -20,3 +20,13 @@ export interface CustomInputProps<T extends FieldValues> {
   placeholder?: string;
   type?: 'text' | 'email' | 'tel' | 'date' | 'password';
 }
+
+export interface User {
+  id: number;
+  avatar: string;
+  name: string;
+  email: string;
+  plan: string;
+  joined: string;
+  status: 'active' | 'pending' | 'inactive';
+}
