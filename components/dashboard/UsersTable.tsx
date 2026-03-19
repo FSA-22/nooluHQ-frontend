@@ -28,8 +28,10 @@ const statusColors: Record<Status, string> = {
 
 const UsersTable = ({ users }: Props) => {
   return (
-    <div className="w-full bg-white shadow-sm rounded-2xl border border-gray-100 p-5 overflow-x-auto">
-      <h3 className="text-lg font-medium text-gray-800 mb-4">Latest Signups</h3>
+    <div className="w-full bg-white shadow-sm rounded-2xl border border-gray-100 p-5 overflow-x-auto max-sm:overflow-scroll">
+      <h3 className="text-lg font-medium text-gray-800 mb-4">
+        Latest Sign ups
+      </h3>
 
       <table className="w-full min-w-150 table-auto">
         <thead className="bg-gray-50">

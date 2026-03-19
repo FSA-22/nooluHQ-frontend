@@ -2,7 +2,7 @@ import MetricCard from '@/components/dashboard/MetricCard';
 import RevenueLineChart from '@/components/dashboard/RevenueLineChart';
 import UserCountryPieChart from '@/components/dashboard/UserCountryPieChart';
 import UsersTable from '@/components/dashboard/UsersTable';
-import PlansHistogramChart from '@/components/PlansHistogramChart';
+import PlansHistogramChart from '@/components/dashboard/PlansHistogramChart';
 import { data, data2, data3, users } from '@/constants';
 
 const Dashboard = () => {
