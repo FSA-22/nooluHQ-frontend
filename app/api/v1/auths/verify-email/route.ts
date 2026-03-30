@@ -1,22 +1,62 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import axios from 'axios';
 
-export async function POST(req: Request) {
-  const body = await req.json();
+export async function POST(request: NextRequest) {
+  const body = await request.json();
 
-  const res = await fetch(
-    `${process.env.EXPRESS_API_URL}/auths/verify-email`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+  try {
+    const result = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auths/verify-otp`,
+      body,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    const { accessToken, refreshToken, message, nextStep } = result.data;
+
+    const response = NextResponse.json({
+      message,
+      nextStep,
+    });
+
+    //  Set cookies
+    response.cookies.set('accessToken', accessToken, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 60 * 60, // 1 hour
+      path: '/',
+      sameSite: 'lax',
+    });
+
+    response.cookies.set('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 60 * 60 * 24 * 7,
+      path: '/',
+      sameSite: 'lax',
+    });
+    console.log('Response from new cookie set up', response);
+    return response;
+  } catch (error: unknown) {
+    let status = 500;
+    let message = 'OTP verification failed';
+
+    if (axios.isAxiosError(error)) {
+      status = error.response?.status || 500;
+      message =
+        error.response?.data?.message ||
+        error.response?.data?.detail ||
+        JSON.stringify(error.response?.data) ||
+        'OTP verification failed';
+    } else {
+      console.error('Non-Axios error:', error);
     }
-  );
 
-  const data = await res.json();
+    console.error('Verify OTP error:', message);
 
-  if (!res.ok) {
-    return NextResponse.json(data, { status: res.status });
+    return NextResponse.json({ error: message }, { status });
   }
-
-  return NextResponse.json(data);
 }

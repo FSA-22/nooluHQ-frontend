@@ -1,5 +1,6 @@
 'use client';
 
+import { useDashboardStore } from '@/lib/store/useDashboardStore';
 import {
   PieChart,
   Pie,
@@ -30,6 +31,10 @@ const CustomTooltip = ({ active, payload }: any) => {
   if (!active || !payload?.length) return null;
 
   const { country, users, percent } = payload[0].payload;
+
+  const { stats, loading, error, fetchDashboard } = useDashboardStore();
+
+  console.log('stats', stats);
 
   return (
     <div className="bg-primaryDeep shadow-lg rounded-xl px-4 py-2">
@@ -64,7 +69,7 @@ export default function UserCountryPieChart({ data }: Props) {
       <div className="relative w-full h-75">
         <ResponsiveContainer>
           <PieChart>
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={(props) => <CustomTooltip {...props} />} />
 
             <Pie
               data={sortedData}

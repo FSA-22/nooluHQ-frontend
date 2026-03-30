@@ -24,8 +24,9 @@ import Textbox from '../shared/Textbox';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { getErrorMessage } from '@/utils/getErrorMessage';
 
-const AccountForm = () => {
+const registerForm = () => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof accountFormSchema>>({
@@ -43,19 +44,25 @@ const AccountForm = () => {
   const { isSubmitting } = form.formState;
 
   const onSubmit = async (data: z.infer<typeof accountFormSchema>) => {
-    console.log(data, 'data');
-
     try {
       await registerAccount(data);
 
       toast.success('Account created successfully');
       form.reset();
 
-      router.push('/confirm-email');
+      router.push('/verify-email');
     } catch (error: any) {
-      toast.error(error.message);
+      const message = getErrorMessage(error);
+
+      form.setError('root', {
+        type: 'server',
+        message,
+      });
+
+      toast.error(message);
     }
   };
+
   return (
     <section className="w-full mx-auto my-auto py-8 max-w-md">
       {/* step indicator */}
@@ -177,9 +184,12 @@ const AccountForm = () => {
             <div className="w-full mx-auto flex flex-col text-xs space-y-1">
               <div className="flex-center gap-1">
                 Already have an account?
-                <span className="text-primaryNorma desc-text text-xs">
+                <Link
+                  href={'/login'}
+                  className="text-primaryNorma desc-text text-xs"
+                >
                   Login
-                </span>
+                </Link>
               </div>
               <div className="flex-center w-full desc-text text-xs">
                 By creating an account. I agree to MayK's AI
@@ -231,4 +241,4 @@ const AccountForm = () => {
   );
 };
 
-export default AccountForm;
+export default registerForm;

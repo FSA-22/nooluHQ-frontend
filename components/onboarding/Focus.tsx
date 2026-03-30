@@ -3,12 +3,11 @@
 import * as z from 'zod';
 import { focusFormSchema } from '@/schemas/onboarding.schema';
 
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { useState } from 'react';
 
 import { ChevronLeft } from 'lucide-react';
 
@@ -18,6 +17,8 @@ import { Button } from '@/components/ui/button';
 import { FOCUS_CARDS } from '@/constants';
 import Image from 'next/image';
 
+import { setupGoal } from '@/lib/services/onboarding';
+
 const Goal = () => {
   const router = useRouter();
 
@@ -26,28 +27,27 @@ const Goal = () => {
     defaultValues: { focusId: '' },
   });
 
-  const [selectedFocus, setSelectedFocus] = useState<string>('');
+  const { setValue, watch, handleSubmit, formState } = form;
+  const selectedFocus = watch('focusId');
 
-  const { isSubmitting } = form.formState;
-
-  const onSubmit = async () => {
-    if (!selectedFocus) {
-      toast.error('Please select a focus area or skip for later');
-      return;
-    }
-
+  const onSubmit = handleSubmit(async (data) => {
     try {
-      toast.success('Focus saved');
+      const selected = FOCUS_CARDS.find((c) => c.id === data.focusId);
 
+      if (!selected) {
+        return toast.error('Invalid selection');
+      }
+
+      await setupGoal({ focusId: selected.id });
+
+      toast.success('Focus saved');
       router.push('/dashboard');
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.message || 'Failed to save goal');
     }
-  };
+  });
 
-  const skip = () => {
-    router.push('/dashboard');
-  };
+  const skip = () => router.push('/dashboard');
 
   return (
     <section className="mx-auto max-w-xl w-full">
@@ -72,27 +72,31 @@ const Goal = () => {
 
       {/* CARDS */}
       <div className="mt-8 grid grid-cols-3 gap-4 w-full">
-        {FOCUS_CARDS.map((card) => (
+        {FOCUS_CARDS.map(({ title, id, description, icon }) => (
           <div
-            key={card.id}
+            key={id}
             className={`flex flex-col w-46 px-4 py-2 border rounded-md cursor-pointer transition
-              ${selectedFocus === card.id ? 'border-primaryNorma bg-primaryLight/10' : 'border-gray-200 hover:border-gray-400'}`}
-            onClick={() => setSelectedFocus(card.id)}
+              ${
+                selectedFocus === id
+                  ? 'border-primaryNorma bg-primaryLight/10'
+                  : 'border-gray-200 hover:border-gray-400'
+              }`}
+            onClick={() => setValue('focusId', id)}
           >
             <Image
-              src={card.icon}
-              alt={card.title}
+              src={icon}
+              alt={title}
               width={16}
               height={16}
               className="w-5 h-5 mb-2"
             />
-            <h4 className="font-medium text-sm">{card.title}</h4>
-            <p className="desc-text text-xs">{card.description}</p>
+            <h4 className="font-medium text-sm">{title}</h4>
+            <p className="desc-text text-xs">{description}</p>
           </div>
         ))}
       </div>
 
-      {/* FOOTER BUTTONS */}
+      {/* FOOTER */}
       <div className="flex justify-between items-center mt-10">
         <button onClick={skip} className="onboarding-button-secondary">
           Skip for later
@@ -100,10 +104,10 @@ const Goal = () => {
 
         <Button
           onClick={onSubmit}
-          className="onboarding-button-primary w-fit bg-primaryNorma px-8 "
-          disabled={isSubmitting}
+          className="onboarding-button-primary w-fit bg-primaryNorma px-8"
+          disabled={formState.isSubmitting}
         >
-          {isSubmitting ? 'Saving...' : 'Continue'}
+          {formState.isSubmitting ? 'Saving...' : 'Continue'}
         </Button>
       </div>
     </section>

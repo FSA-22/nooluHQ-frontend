@@ -19,7 +19,7 @@ interface Props {
   users: User[];
 }
 
-// ✅ Corrected Tailwind classes for badges
+// Corrected Tailwind classes for badges
 const statusColors: Record<Status, string> = {
   active: 'bg-green-50 text-green-700',
   inactive: 'bg-gray-50 text-gray-700',

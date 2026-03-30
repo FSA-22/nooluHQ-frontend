@@ -25,7 +25,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
   return (
     <div className="bg-primaryDeep shadow-lg rounded-xl px-4 py-2 ">
-      <p className="text-xs text-gray-500">{label}</p>
+      <p className="text-xs text-white">{label}</p>
       <p className="text-sm font-semibold text-white">
         {payload[0].value} users
       </p>

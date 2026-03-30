@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { setupProfile } from '@/lib/services/onboarding';
 
 const ProfileComponent = () => {
   const router = useRouter();
@@ -38,10 +39,11 @@ const ProfileComponent = () => {
 
   const { isSubmitting } = form.formState;
 
-  async function onSubmit(values: z.infer<typeof profileFormSchema>) {
+  async function onSubmit(data: z.infer<typeof profileFormSchema>) {
     try {
-      toast.success('Profile saved');
+      await setupProfile(data);
 
+      toast.success('Profile saved');
       router.push('/workspace');
     } catch (error: any) {
       toast.error(error.message);

@@ -9,7 +9,7 @@ export default function HomePage() {
       <section className="flex flex-col items-center justify-center text-center px-6 py-20 max-w-4xl mx-auto">
         <div className="mt-8 flex gap-4">
           <Link
-            href="/account"
+            href="/register"
             className="onboarding-button-primary px-6 py-3 rounded-xl font-medium hover:opacity-90 transition"
           >
             Start Free
@@ -73,7 +73,7 @@ export default function HomePage() {
         </p>
 
         <Link
-          href="/account"
+          href="/register"
           className="inline-block mt-6 onboarding-button-primary w-fit text-white px-8 py-3 rounded-xl font-medium hover:opacity-90 transition"
         >
           Get Started Now

@@ -1,4 +1,3 @@
-// app/api/v1/auths/account/route.ts
 import { NextResponse } from 'next/server';
 import { serverAxios } from '@/lib/services/axios';
 import { AxiosError, isAxiosError } from 'axios';
@@ -10,9 +9,14 @@ export async function POST(req: Request) {
     const body = await req.json();
     console.log('body from route', body);
 
-    const response = await serverAxios.post('/api/v1/auths/account', body);
+    const response = await serverAxios.post('/api/v1/auths/register', body);
 
-    return NextResponse.json(response.data);
+    console.log('backend response status:', response.status);
+    console.log('backend response data:', response.data);
+
+    return NextResponse.json(response.data, {
+      status: response.status,
+    });
   } catch (error: unknown) {
     // Type-safe Axios error check
     if (isAxiosError(error)) {

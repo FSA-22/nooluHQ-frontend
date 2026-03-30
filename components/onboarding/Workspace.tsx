@@ -22,6 +22,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 import { ChevronLeft } from 'lucide-react';
+import { createWorkspace } from '@/lib/services/onboarding';
 
 const WorkspaceComponent = () => {
   const router = useRouter();
@@ -31,19 +32,19 @@ const WorkspaceComponent = () => {
     mode: 'onChange',
 
     defaultValues: {
-      workspaceName: '',
+      name: '',
     },
   });
 
   const { isSubmitting } = form.formState;
 
-  async function onSubmit(values: z.infer<typeof workspaceFormSchema>) {
+  async function onSubmit(data: z.infer<typeof workspaceFormSchema>) {
     try {
+      await createWorkspace(data);
       toast.success('Workspace created');
+      console.log('workspace values', data);
 
-      console.log('workspace values', values);
-
-      router.push('/focus');
+      router.push('/teammate');
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -74,7 +75,7 @@ const WorkspaceComponent = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
         <FieldGroup>
           <Controller
-            name="workspaceName"
+            name="name"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>

@@ -1,118 +1,134 @@
 'use client';
 
 import * as z from 'zod';
-import { teammateFormSchema } from '@/schemas/onboarding.schema';
-
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
-import { ChevronLeft, AlertCircle } from 'lucide-react';
+import { ChevronLeft, AlertCircle, X } from 'lucide-react';
 
 import Textbox from '@/components/shared/Textbox';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-
 import { toast } from 'sonner';
+import { inviteTeammate } from '@/lib/services/onboarding';
+
+const emailSchema = z.object({
+  emailInput: z.string().optional(),
+});
 
 const Teammates = () => {
   const router = useRouter();
-
-  const form = useForm<z.infer<typeof teammateFormSchema>>({
-    resolver: zodResolver(teammateFormSchema),
-    defaultValues: {
-      emails: [],
-    },
-  });
-
-  const [emailInput, setEmailInput] = useState('');
   const [emails, setEmails] = useState<string[]>([]);
 
-  function addEmail(email: string) {
-    const trimmed = email.trim();
+  const form = useForm<z.infer<typeof emailSchema>>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: { emailInput: '' },
+  });
 
-    if (!trimmed) return;
+  const { control, handleSubmit, setValue, getValues } = form;
 
-    const parsed = z.string().email().safeParse(trimmed);
+  const addEmail = () => {
+    const email = getValues('emailInput')?.trim();
+    if (!email) return;
 
+    const parsed = z.string().email().safeParse(email);
     if (!parsed.success) {
-      toast.error('Invalid email');
-      return;
+      return toast.error(parsed.error.issues[0].message);
     }
 
-    if (emails.includes(trimmed)) {
-      toast.error('Email already added');
-      return;
+    if (emails.includes(email)) {
+      return toast.error('Email already added');
     }
 
-    setEmails([...emails, trimmed]);
-    setEmailInput('');
-  }
+    setEmails((prev) => [...prev, email]);
+    setValue('emailInput', '');
+  };
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
-
-      addEmail(emailInput);
+      addEmail();
     }
-  }
+  };
 
-  function removeEmail(index: number) {
-    const updated = [...emails];
-    updated.splice(index, 1);
+  const removeEmail = (index: number) => {
+    setEmails((prev) => prev.filter((_, i) => i !== index));
+  };
 
-    setEmails(updated);
-  }
+  const onSubmit = async () => {
+    let finalEmails = [...emails];
 
-  async function onSubmit() {
+    const currentInput = getValues('emailInput')?.trim();
+
+    if (currentInput) {
+      const parsed = z.string().email().safeParse(currentInput);
+
+      if (!parsed.success) {
+        return toast.error(parsed.error.issues[0].message);
+      }
+
+      if (!finalEmails.includes(currentInput)) {
+        finalEmails.push(currentInput);
+      }
+    }
+
+    if (finalEmails.length === 0) {
+      router.push('/focus');
+      return;
+    }
+
     try {
-      toast.success('Teammates saved');
-
-      router.push('/onboarding/goal');
+      await inviteTeammate({ emails: finalEmails });
+      toast.success('Teammates invited successfully!');
+      router.push('/focus');
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.message || 'Failed to invite teammates');
     }
-  }
+  };
 
-  function skip() {
-    router.push('/goal');
-  }
+  const skip = () => router.push('/focus');
 
   return (
-    <section className="mx-auto max-w-md w-full py-6 mt-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mx-auto max-w-md w-full py-6 mt-4"
+    >
       {/* HEADER */}
       <div className="flex items-center justify-between mb-4">
         <button
+          type="button"
           onClick={() => router.back()}
           className="flex items-center gap-1 desc-text text-sm"
         >
           <ChevronLeft size={18} />
           Back
         </button>
-
         <span className="desc-text text-sm">3/4</span>
       </div>
 
       {/* TEXTBOX */}
       <Textbox
         title="Invite teammates by email"
-        desc="Add their addresses so that they can join your workspace right away, you can skip this and invite them later."
+        desc="Add their addresses so they can join your workspace right away. You can skip and invite them later."
       />
 
       {/* EMAIL INPUT */}
-      <div className="mt-2 space-y-2">
-        <label className="text-sm font-medium">Enter email address</label>
-
-        <Input
-          placeholder="teammate@email.com"
-          value={emailInput}
-          onChange={(e) => setEmailInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="input-field h-11"
-        />
-      </div>
+      <Controller
+        name="emailInput"
+        control={control}
+        render={({ field }) => (
+          <div className="mt-2 space-y-2">
+            <label className="text-sm font-medium">Enter email address</label>
+            <Input
+              placeholder="teammate@email.com"
+              {...field}
+              onKeyDown={handleKeyDown}
+              className="input-field h-11"
+            />
+          </div>
+        )}
+      />
 
       {/* EMAIL CHIPS */}
       {emails.length > 0 && (
@@ -123,9 +139,12 @@ const Teammates = () => {
               className="px-3 py-1 text-sm bg-muted rounded-full flex items-center gap-2"
             >
               {email}
-
-              <button onClick={() => removeEmail(index)} className="text-xs">
-                ✕
+              <button
+                type="button"
+                onClick={() => removeEmail(index)}
+                className="text-xs"
+              >
+                <X size={12} />
               </button>
             </div>
           ))}
@@ -136,40 +155,34 @@ const Teammates = () => {
       <div className="mt-8">
         <div className="flex items-center gap-1 text-darkGrey font-medium mb-3">
           <AlertCircle size={16} className="text-primaryNorma" />
-
           <span>Quick Tips</span>
         </div>
-
         <ol className="space-y-2 text-xs text-darkGrey list-decimal pl-5">
           <li>Separate multiple emails with commas</li>
-
           <li>Press enter or comma to add each teammate.</li>
-
-          <li>
-            They won't receive an invite until you've completed your setup
-          </li>
-
+          <li>They won't receive invites until setup is completed</li>
           <li>You can skip this step and invite teammates later.</li>
         </ol>
       </div>
 
-      {/* FOOTER BUTTONS */}
+      {/* FOOTER */}
       <div className="flex justify-between items-center mt-10">
         <button
+          type="button"
           onClick={skip}
-          className="text-sm font-medium text-primaryNorma"
+          className="onboarding-button-secondary text-primaryNorma"
         >
           Skip for later
         </button>
 
         <Button
-          onClick={onSubmit}
+          type="submit"
           className="onboarding-button-primary w-fit px-8 bg-primaryNorma"
         >
           Continue
         </Button>
       </div>
-    </section>
+    </form>
   );
 };
 
