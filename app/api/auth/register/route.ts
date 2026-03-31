@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { serverAxios } from '@/lib/services/axios';
-import { AxiosError, isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 
 export async function POST(req: Request) {
   console.log('account API route loaded');
@@ -17,15 +17,27 @@ export async function POST(req: Request) {
     return NextResponse.json(response.data, {
       status: response.status,
     });
-  } catch (error: any) {
-    console.log('AXIOS FULL ERROR:', error);
+  } catch (error: unknown) {
+    console.error('FULL ERROR:', error);
 
-    return NextResponse.json({
-      message: error.message,
-      status: error.response?.status,
-      data: error.response?.data,
-      url: error.config?.url,
-      baseURL: error.config?.baseURL,
-    });
+    if (isAxiosError(error)) {
+      console.error('AXIOS ERROR DATA:', error.response?.data);
+      console.error('AXIOS ERROR STATUS:', error.response?.status);
+      console.error('AXIOS ERROR URL:', error.config?.baseURL);
+
+      return NextResponse.json(
+        {
+          message: error.response?.data || 'Axios error',
+          status: error.response?.status,
+          baseURL: error.config?.baseURL,
+        },
+        { status: error.response?.status || 500 },
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Unknown error', error },
+      { status: 500 },
+    );
   }
 }
