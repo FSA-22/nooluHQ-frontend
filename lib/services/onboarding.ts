@@ -6,7 +6,7 @@ export async function registerAccount(data: {
   confirmPassword: string;
 }) {
   try {
-    const res = await axios.post('/api/v1/auths/register', data, {
+    const res = await axios.post('/api/auth/register', data, {
       withCredentials: true,
     });
 
@@ -23,7 +23,7 @@ export async function registerAccount(data: {
 
 export async function verifyEmailOtp(data: { otp: string }) {
   try {
-    const res = await axios.post('/api/v1/auths/verify-email', data, {
+    const res = await axios.post('/api/auth/verify-email', data, {
       withCredentials: true,
     });
 
@@ -67,7 +67,7 @@ export async function setupProfile(data: {
   console.log('profile onboarding', data);
 
   try {
-    const res = await axios.post('/api/v1/onboarding/profile', data, {
+    const res = await axios.post('/api/onboarding/profile', data, {
       withCredentials: true,
     });
 
@@ -84,7 +84,7 @@ export async function createWorkspace(data: { name: string }) {
   console.log('focus body', data);
 
   try {
-    const res = await axios.post('/api/v1/onboarding/workspace', data, {
+    const res = await axios.post('/api/onboarding/workspace', data, {
       withCredentials: true,
     });
     return res.data;
@@ -100,7 +100,7 @@ export const inviteTeammate = async (data: { emails: string[] }) => {
   console.log('invite onboarding body', data);
 
   try {
-    const res = await axios.post('/api/v1/onboarding/workspace/invite', data, {
+    const res = await axios.post('/api/onboarding/workspace/invite', data, {
       withCredentials: true,
     });
     return res.data;
@@ -124,20 +124,3 @@ export async function setupGoal(data: { focusId: string }) {
     throw new Error('Goal setup failed');
   }
 }
-
-// ogin is not done
-
-// export async function getDashboardStats() {
-//   try {
-//     const res = await axios.get('/api/v1/dashboard/stats', {
-//       withCredentials: true,
-//     });
-//     return res.data;
-//   } catch (error: unknown) {
-//     if (axios.isAxiosError(error))
-//       throw new Error(
-//         error.response?.data?.message || 'Failed to fetch dashboard',
-//       );
-//     throw new Error('Failed to fetch dashboard');
-//   }
-// }

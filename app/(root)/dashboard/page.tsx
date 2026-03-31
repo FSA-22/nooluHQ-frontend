@@ -7,9 +7,27 @@ import UsersTable from '@/components/dashboard/UsersTable';
 import PlansHistogramChart from '@/components/dashboard/PlansHistogramChart';
 import { useDashboard } from '@/hooks/useDashboard';
 import { transformDashboardData } from '@/utils/dashboardTransform';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
   const { dashboardStats, loading, error } = useDashboard();
+
+  useEffect(() => {
+    const run = async () => {
+      const res = await fetch('/api/auth/session');
+      const session = await res.json();
+
+      if (!session?.idToken) return;
+
+      await fetch('/api/auth/google-login', {
+        method: 'POST',
+        body: JSON.stringify({ idToken: session.idToken }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+    };
+
+    run();
+  }, []);
 
   const data = transformDashboardData(dashboardStats);
 

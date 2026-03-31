@@ -10,7 +10,7 @@ export const login = async (payload: LoginPayload) => {
   try {
     console.log('data from form service', payload);
 
-    const response = await axios.post('/api/v1/auths/login', payload, {
+    const response = await axios.post('/api/auth/login', payload, {
       withCredentials: true,
     });
 

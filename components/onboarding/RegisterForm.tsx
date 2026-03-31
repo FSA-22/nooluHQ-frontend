@@ -21,12 +21,14 @@ import { useRouter } from 'next/navigation';
 
 import { Input } from '@/components/ui/input';
 import Textbox from '../shared/Textbox';
-import Image from 'next/image';
+
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { getErrorMessage } from '@/utils/getErrorMessage';
 
-const registerForm = () => {
+import LoginWithGoogle from '../GoogleButton';
+
+const RegisterForm = () => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof accountFormSchema>>({
@@ -222,7 +224,10 @@ const registerForm = () => {
             <div className="flex-1 border-t border-gray-200" />
           </div>
           {/* GOOGLE BUTTON */}
-          <Button
+
+          <LoginWithGoogle />
+
+          {/* <Button
             type="button"
             variant="outline"
             className="w-full py-5 flex-center gap-3 text-darkGrey rounded-1"
@@ -234,11 +239,11 @@ const registerForm = () => {
               src="/icons/google-icon.svg"
             />
             Continue with Google
-          </Button>
+          </Button> */}
         </div>
       </div>
     </section>
   );
 };
 
-export default registerForm;
+export default RegisterForm;

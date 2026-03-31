@@ -17,22 +17,15 @@ export async function POST(req: Request) {
     return NextResponse.json(response.data, {
       status: response.status,
     });
-  } catch (error: unknown) {
-    // Type-safe Axios error check
-    if (isAxiosError(error)) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      return NextResponse.json(
-        {
-          message: axiosError.response?.data?.message || 'Registration failed',
-        },
-        { status: axiosError.response?.status || 500 },
-      );
-    }
+  } catch (error: any) {
+    console.log('AXIOS FULL ERROR:', error);
 
-    // fallback for unknown errors
-    return NextResponse.json(
-      { message: 'Registration failed' },
-      { status: 500 },
-    );
+    return NextResponse.json({
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url,
+      baseURL: error.config?.baseURL,
+    });
   }
 }

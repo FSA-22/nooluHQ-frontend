@@ -23,22 +23,21 @@ export async function POST(request: NextRequest) {
     const isProd = process.env.NODE_ENV === 'production';
 
     //  set cookies
-    response.cookies.set('access_token', accessToken, {
+    response.cookies.set('accessToken', accessToken, {
       httpOnly: true,
       secure: isProd,
+      sameSite: 'lax',
+      path: '/',
       maxAge: 60 * 15,
-      path: '/',
-      sameSite: 'lax',
     });
 
-    response.cookies.set('refresh_token', refreshToken, {
+    response.cookies.set('refreshToken', refreshToken, {
       httpOnly: true,
       secure: isProd,
-      maxAge: 60 * 60 * 24 * 7,
-      path: '/',
       sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7,
     });
-
     return response;
   } catch (error: any) {
     console.error('LOGIN ROUTE ERROR:', error?.response?.data || error);
