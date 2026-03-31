@@ -18,21 +18,26 @@ export async function POST(req: Request) {
       status: response.status,
     });
   } catch (error: unknown) {
-    // Type-safe Axios error check
-    if (isAxiosError(error)) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      return NextResponse.json(
-        {
-          message: axiosError.response?.data?.message || 'Registration failed',
-        },
-        { status: axiosError.response?.status || 500 },
-      );
-    }
+  console.error('FULL ERROR:', error);
 
-    // fallback for unknown errors
+  if (isAxiosError(error)) {
+    console.error('AXIOS ERROR DATA:', error.response?.data);
+    console.error('AXIOS ERROR STATUS:', error.response?.status);
+    console.error('AXIOS ERROR URL:', error.config?.baseURL);
+
     return NextResponse.json(
-      { message: 'Registration failed' },
-      { status: 500 },
+      {
+        message: error.response?.data || 'Axios error',
+        status: error.response?.status,
+        baseURL: error.config?.baseURL,
+      },
+      { status: error.response?.status || 500 }
     );
   }
+
+  return NextResponse.json(
+    { message: 'Unknown error', error },
+    { status: 500 }
+  );
+}
 }
