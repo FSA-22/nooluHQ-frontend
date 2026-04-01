@@ -1,3 +1,4 @@
+import { serverAxios } from '@/lib/services/axios';
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -5,15 +6,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
   try {
-    const result = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auths/verify-otp`,
-      body,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
+    const result = await serverAxios.post('/api/v1/auths/verify-otp', body);
 
     const { accessToken, refreshToken, message, nextStep } = result.data;
 
