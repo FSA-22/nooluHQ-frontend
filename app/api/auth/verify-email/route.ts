@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     response.cookies.set('accessToken', accessToken, {
       httpOnly: true,
       secure: false,
-      maxAge: 60 * 60, // 1 hour
+      maxAge: 60 * 60,
       path: '/',
       sameSite: 'lax',
     });
