@@ -41,28 +41,6 @@ export async function POST(request: NextRequest) {
     console.log('Response from new cookie set up', response);
     return response;
   } catch (error: unknown) {
-    console.error('FULL ERROR:', error);
-
-    if (isAxiosError(error)) {
-      console.error('AXIOS ERROR DATA:', error.response?.data);
-      console.error('AXIOS ERROR STATUS:', error.response?.status);
-      console.error('AXIOS ERROR URL:', error.config?.baseURL);
-
-      return NextResponse.json(
-        {
-          message: error.response?.data || 'Axios error',
-          status: error.response?.status,
-          baseURL: error.config?.baseURL,
-        },
-        { status: error.response?.status || 500 },
-      );
-    }
-
-    return NextResponse.json(
-      { message: 'Unknown error', error },
-      { status: 500 },
-    );
-
     let status = 500;
     let message = 'OTP verification failed';
 
@@ -78,6 +56,7 @@ export async function POST(request: NextRequest) {
     }
 
     console.error('Verify OTP error:', message);
+    console.error('Verify OTP error:', status);
 
     return NextResponse.json({ error: message }, { status });
   }
