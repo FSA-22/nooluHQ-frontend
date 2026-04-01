@@ -114,7 +114,7 @@ export async function setupGoal(data: { focusId: string }) {
   try {
     console.log('focus onboarding', data);
 
-    const res = await axios.post('/api/v1/onboarding/goal', data, {
+    const res = await axios.post('/api/onboarding/goal', data, {
       withCredentials: true,
     });
     return res.data;

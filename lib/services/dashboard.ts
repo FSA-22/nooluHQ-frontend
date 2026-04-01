@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const getDashboardStats = async () => {
   try {
-    const response = await axios.get('/api/v1/dashboard', {
+    const response = await axios.get('/api/dashboard', {
       withCredentials: true,
     });
 
