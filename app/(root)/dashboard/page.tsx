@@ -48,7 +48,10 @@ const Dashboard = () => {
   return (
     <section className="w-full sm:min-h-screen bg-bgPrimary p-6 space-y-4">
       <div className="bg-transparent">
-        <h1 className="title-text text-3xl"> {user?.name || 'Guest'} </h1>
+        <h1 className="title-text text-3xl">
+          {' '}
+          {loadingUser ? 'loading user...' : user?.name || 'Guest'}
+        </h1>
       </div>
       <div className="flex flex-col md:flex-row gap-5">
         <MetricCard

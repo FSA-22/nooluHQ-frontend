@@ -21,7 +21,7 @@ export default function LoadingSpinner() {
 
         {/* Rotating progress segment */}
         <div
-          className="absolute inset-0 rounded-full border-12 border-transparent border-t-[#06005B]"
+          className="absolute inset-0 rounded-full border-12 border-transparent border-t-primaryNorma"
           style={{ transform: `rotate(${rotation}deg)` }}
         ></div>
       </div>

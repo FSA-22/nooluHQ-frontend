@@ -7,6 +7,7 @@ import AppLogo from './shared/AppLogo';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { Input } from './ui/input';
+import { useCurrentUserFromDashboard } from '@/hooks/useCurrentUser';
 
 /* ---------------- SEARCH COMPONENT ---------------- */
 function SearchBar() {
@@ -30,6 +31,8 @@ function SearchBar() {
 /* ---------------- HEADER ---------------- */
 export default function AppHeader() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, loading: loadingUser } = useCurrentUserFromDashboard();
+
   const pathname = usePathname();
 
   const isDashboard = pathname.startsWith('/dashboard');
@@ -67,7 +70,9 @@ export default function AppHeader() {
                   height={28}
                   className="rounded-full"
                 />
-                <span className="text-sm font-medium">Adebanjo Promise</span>
+                <span className="text-sm font-medium">
+                  {loadingUser ? 'loading user...' : user?.name || 'Guest'}
+                </span>
                 <ChevronDown size={16} className="text-gray-500" />
               </div>
             </>
