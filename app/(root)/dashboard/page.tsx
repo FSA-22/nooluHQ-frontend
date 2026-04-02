@@ -1,13 +1,9 @@
 'use client';
 
 import MetricCard from '@/components/dashboard/MetricCard';
-// import RevenueLineChart from '@/components/dashboard/RevenueLineChart';
-// import UserCountryPieChart from '@/components/dashboard/UserCountryPieChart';
-// import UsersTable from '@/components/dashboard/UsersTable';
-// import PlansHistogramChart from '@/components/dashboard/PlansHistogramChart';
 import { useDashboard } from '@/hooks/useDashboard';
 import { transformDashboardData } from '@/utils/dashboardTransform';
-import { useEffect } from 'react';
+import { useCurrentUserFromDashboard } from '@/hooks/useCurrentUser';
 
 import dynamic from 'next/dynamic';
 
@@ -29,23 +25,7 @@ const PlansHistogramChart = dynamic(
 
 const Dashboard = () => {
   const { dashboardStats, loading, error } = useDashboard();
-
-  // useEffect(() => {
-  //   const run = async () => {
-  //     const res = await fetch('/api/auth/session');
-  //     const session = await res.json();
-
-  //     if (!session?.idToken) return;
-
-  //     await fetch('/api/auth/google-login', {
-  //       method: 'POST',
-  //       body: JSON.stringify({ idToken: session.idToken }),
-  //       headers: { 'Content-Type': 'application/json' },
-  //     });
-  //   };
-
-  //   run();
-  // }, []);
+  const { user, loading: loadingUser } = useCurrentUserFromDashboard();
 
   const data = transformDashboardData(dashboardStats);
 
@@ -68,7 +48,7 @@ const Dashboard = () => {
   return (
     <section className="w-full sm:min-h-screen bg-bgPrimary p-6 space-y-4">
       <div className="bg-transparent">
-        <h1 className="title-text text-3xl">Welcome Adebanjo</h1>
+        <h1 className="title-text text-3xl"> {user?.name || 'Guest'} </h1>
       </div>
       <div className="flex flex-col md:flex-row gap-5">
         <MetricCard

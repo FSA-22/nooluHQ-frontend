@@ -1,17 +1,14 @@
 'use client';
 
-import { getAuthenticatedUser } from '@/lib/services/user';
+import { getDashboardStats } from '@/lib/services/dashboard';
 import { useEffect, useState } from 'react';
 
-export interface UserProps {
-  id: string;
-  name: string;
-  email: string;
-  role?: string;
-}
-
-export function useCurrentUser() {
-  const [user, setUser] = useState<UserProps | null>(null);
+export function useCurrentUserFromDashboard() {
+  const [user, setUser] = useState<{
+    id: string;
+    name: string;
+    email: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,8 +16,8 @@ export function useCurrentUser() {
     setLoading(true);
     setError(null);
     try {
-      const res = await getAuthenticatedUser();
-      setUser(res.data.data);
+      const res = await getDashboardStats();
+      setUser(res.currentUser);
     } catch (err: any) {
       setError(err?.message || 'Failed to fetch user');
       setUser(null);

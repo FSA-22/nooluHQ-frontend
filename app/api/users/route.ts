@@ -23,7 +23,7 @@ export async function GET() {
       );
     }
 
-    // ✅ Call backend with Authorization header
+    // Call backend with Authorization header
     const response = await serverAxios.get('/users', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
