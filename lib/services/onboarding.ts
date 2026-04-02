@@ -110,6 +110,7 @@ export const inviteTeammate = async (data: { emails: string[] }) => {
     throw new Error('Invite failed');
   }
 };
+
 export async function setupGoal(data: { focusId: string }) {
   try {
     console.log('focus onboarding', data);

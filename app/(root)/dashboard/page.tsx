@@ -1,33 +1,51 @@
 'use client';
 
 import MetricCard from '@/components/dashboard/MetricCard';
-import RevenueLineChart from '@/components/dashboard/RevenueLineChart';
-import UserCountryPieChart from '@/components/dashboard/UserCountryPieChart';
-import UsersTable from '@/components/dashboard/UsersTable';
-import PlansHistogramChart from '@/components/dashboard/PlansHistogramChart';
+// import RevenueLineChart from '@/components/dashboard/RevenueLineChart';
+// import UserCountryPieChart from '@/components/dashboard/UserCountryPieChart';
+// import UsersTable from '@/components/dashboard/UsersTable';
+// import PlansHistogramChart from '@/components/dashboard/PlansHistogramChart';
 import { useDashboard } from '@/hooks/useDashboard';
 import { transformDashboardData } from '@/utils/dashboardTransform';
 import { useEffect } from 'react';
 
+import dynamic from 'next/dynamic';
+
+const UsersTable = dynamic(() => import('@/components/dashboard/UsersTable'), {
+  ssr: false,
+});
+const RevenueLineChart = dynamic(
+  () => import('@/components/dashboard/RevenueLineChart'),
+  { ssr: false },
+);
+const UserCountryPieChart = dynamic(
+  () => import('@/components/dashboard/UserCountryPieChart'),
+  { ssr: false },
+);
+const PlansHistogramChart = dynamic(
+  () => import('@/components/dashboard/PlansHistogramChart'),
+  { ssr: false },
+);
+
 const Dashboard = () => {
   const { dashboardStats, loading, error } = useDashboard();
 
-  useEffect(() => {
-    const run = async () => {
-      const res = await fetch('/api/auth/session');
-      const session = await res.json();
+  // useEffect(() => {
+  //   const run = async () => {
+  //     const res = await fetch('/api/auth/session');
+  //     const session = await res.json();
 
-      if (!session?.idToken) return;
+  //     if (!session?.idToken) return;
 
-      await fetch('/api/auth/google-login', {
-        method: 'POST',
-        body: JSON.stringify({ idToken: session.idToken }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-    };
+  //     await fetch('/api/auth/google-login', {
+  //       method: 'POST',
+  //       body: JSON.stringify({ idToken: session.idToken }),
+  //       headers: { 'Content-Type': 'application/json' },
+  //     });
+  //   };
 
-    run();
-  }, []);
+  //   run();
+  // }, []);
 
   const data = transformDashboardData(dashboardStats);
 

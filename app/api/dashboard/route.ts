@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import axios, { AxiosError } from 'axios';
+import { serverAxios } from '@/lib/services/axios'; // <-- use the preconfigured instance
+import { AxiosError } from 'axios';
 
 export async function GET(req: NextRequest) {
   try {
-    // Read cookie from browser request
     const accessToken = req.cookies.get('accessToken')?.value;
 
     if (!accessToken) {
@@ -14,21 +14,18 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Send token via Authorization header
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/dashboard/stats`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-
-    console.log('Extracted response:', response.data);
+    const response = await serverAxios.get('/api/v1/dashboard/stats', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
     return NextResponse.json(response.data);
   } catch (error) {
     const axiosError = error as AxiosError;
+
+    console.error(
+      'Dashboard API error:',
+      axiosError.response?.data || axiosError.message,
+    );
 
     return NextResponse.json(
       {
