@@ -15,7 +15,7 @@ export default function LoginWithGoogle() {
       toast.loading('Redirecting to Google...');
 
       await signIn('google', {
-        callbackUrl: '/dashboard', // direct redirect
+        callbackUrl: '/dashboard',
       });
     } catch (err) {
       console.error(err);

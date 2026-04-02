@@ -138,7 +138,7 @@ const LoginForm = () => {
             form="account-onboarding-form"
             className="w-full bg-primaryNorma hover:bg-primaryLight text-white py-5 rounded-1"
           >
-            Login{' '}
+            {form.formState.isSubmitting || loading ? 'Login in...' : 'Login'}
           </Button>
           <div className="flex mx-auto text-center flex-col w-full">
             <div className="w-full mx-auto flex flex-col text-xs space-y-1">

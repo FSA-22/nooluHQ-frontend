@@ -67,8 +67,8 @@ export const authConfig: NextAuthOptions = {
   },
 
   pages: {
-    signIn: '/login', // custom login page
-    error: '/login', // redirect on error
+    signIn: '/login',
+    error: '/login',
   },
 
   secret: process.env.NEXTAUTH_SECRET,

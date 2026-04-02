@@ -180,7 +180,7 @@ const RegisterForm = () => {
             form="account-onboarding-form"
             className="w-full bg-primaryNorma hover:bg-primaryLight text-white py-5 rounded-1"
           >
-            Create account
+            {isSubmitting ? 'Creating...' : 'Create account'}
           </Button>
           <div className="flex mx-auto text-center flex-col w-full">
             <div className="w-full mx-auto flex flex-col text-xs space-y-1">

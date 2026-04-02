@@ -28,6 +28,8 @@ const Teammates = () => {
 
   const { control, handleSubmit, setValue, getValues } = form;
 
+  const { isSubmitting } = form.formState;
+
   const addEmail = () => {
     const email = getValues('emailInput')?.trim();
     if (!email) return;
@@ -176,10 +178,11 @@ const Teammates = () => {
         </button>
 
         <Button
+          disabled={isSubmitting}
           type="submit"
           className="onboarding-button-primary w-fit px-8 bg-primaryNorma"
         >
-          Continue
+          {isSubmitting ? 'Submitting...' : ' Continue'}
         </Button>
       </div>
     </form>
