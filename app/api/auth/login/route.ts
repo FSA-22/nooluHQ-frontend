@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
+import { serverAxios } from '@/lib/services/axios';
+import { isAxiosError } from 'axios';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     console.log('data from form route', body);
 
-    const result = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auths/login`,
-      body,
-    );
+    const result = await serverAxios.post('/api/v1/auths/login', body);
 
     const { accessToken, refreshToken } = result.data;
 
@@ -39,15 +37,27 @@ export async function POST(request: NextRequest) {
       maxAge: 60 * 60 * 24 * 7,
     });
     return response;
-  } catch (error: any) {
-    console.error('LOGIN ROUTE ERROR:', error?.response?.data || error);
+  } catch (error: unknown) {
+    console.error('FULL ERROR:', error);
 
-    const status = error?.response?.status || 500;
-    const message =
-      error?.response?.data?.message ||
-      error?.response?.data?.detail ||
-      'Login failed';
+    if (isAxiosError(error)) {
+      console.error('AXIOS ERROR DATA:', error.response?.data);
+      console.error('AXIOS ERROR STATUS:', error.response?.status);
+      console.error('AXIOS ERROR URL:', error.config?.baseURL);
 
-    return NextResponse.json({ message }, { status });
+      return NextResponse.json(
+        {
+          message: error.response?.data || 'Axios error',
+          status: error.response?.status,
+          baseURL: error.config?.baseURL,
+        },
+        { status: error.response?.status || 500 },
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Unknown error', error },
+      { status: 500 },
+    );
   }
 }

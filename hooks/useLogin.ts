@@ -8,31 +8,18 @@ import { login } from '@/lib/services/auth';
 import { toast } from 'sonner';
 import { loginFormSchema } from '@/schemas/onboarding.schema';
 
-export default function useLogin() {
+const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
+  console.log('data from form hook', values);
 
-  const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
-    console.log('data from form hook', values);
-
-    return toast.promise(login(values), {
-      loading: 'Logging in...',
-      success: () => {
-        router.push('/dashboard');
-        return 'Logged in successfully!';
-      },
-      error: (err) => {
-        return err?.response?.data?.message || 'Login failed';
-      },
-    });
-  };
-
-  return { form, onSubmit };
-}
+  try {
+    const res = await login(values);
+    toast.success('Logged in successfully!');
+    router.push('/dashboard');
+    return res;
+  } catch (error: any) {
+    toast.error(error.message || 'Login failed');
+    throw error;
+  }
+};
