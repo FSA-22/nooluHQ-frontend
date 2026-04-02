@@ -153,7 +153,7 @@ const VerifyEmail = () => {
               ref={(el) => {
                 inputsRef.current[index] = el;
               }}
-              className="otp-input w-13 h-13 text-center"
+              className="otp-input sm:w-13 sm:h-13 text-center"
             />
             <Label className="sr-only">Digit {index + 1}</Label>
           </div>

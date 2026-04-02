@@ -8,10 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <main className=" bg-bgPrimary h-screen">
-      {/* <div className="px-6 w-full bg-white py-4">
-        <AppLogo />
-      </div> */}
-      <div className="flex flex-col h-full px-6 w-full sm:flex-row">
+      <div className="flex flex-col h-full px-2 sm:px-6 w-full sm:flex-row">
         <div className="flex-1 h-full">
           <div className="mt-10">
             <Textbox

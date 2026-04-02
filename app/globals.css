@@ -109,11 +109,11 @@ body {
 }
 
 @utility home {
-  @apply no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll h-full  py-12 px-8;
+  @apply no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll h-full  py-12 px-1 sm:px-8;
 }
 
 @utility home-container {
-  @apply w-full bg-white rounded-xl;
+  @apply w-full bg-white rounded-xl px-4;
 }
 
 @utility input-field {

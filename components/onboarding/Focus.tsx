@@ -50,9 +50,9 @@ const Goal = () => {
   const skip = () => router.push('/dashboard');
 
   return (
-    <section className="mx-auto max-w-xl w-full">
+    <section className="mx-auto max-w-xl px-4 sm:p-0 w-full">
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between max-sm:p-2 mx-auto mb-6">
         <button
           onClick={() => router.back()}
           className="flex items-center gap-1 text-sm font-medium"
@@ -71,11 +71,11 @@ const Goal = () => {
       />
 
       {/* CARDS */}
-      <div className="mt-8 grid grid-cols-3 gap-4 w-full">
+      <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 w-full">
         {FOCUS_CARDS.map(({ title, id, description, icon }) => (
           <div
             key={id}
-            className={`flex flex-col w-46 px-4 py-2 border rounded-md cursor-pointer transition
+            className={`flex flex-col sm:w-46 px-4 py-2 border rounded-md cursor-pointer transition
               ${
                 selectedFocus === id
                   ? 'border-primaryNorma bg-primaryLight/10'
