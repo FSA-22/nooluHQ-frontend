@@ -100,7 +100,7 @@ body {
 }
 
 @utility title-text {
-  @apply font-medium tracking-tight max-sm:text-xl sm:text-3xl  text-darkGrey;
+  @apply font-medium tracking-tight max-sm:text-xl sm:text-2xl  text-darkGrey;
 }
 
 /* description text */
@@ -109,7 +109,7 @@ body {
 }
 
 @utility home {
-  @apply no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll h-full  py-12 px-1 sm:px-8;
+  @apply no-scrollbar flex w-full flex-row max-xl:max-h-screen max-xl:overflow-y-scroll h-screen  py-12 px-1 sm:px-8;
 }
 
 @utility home-container {

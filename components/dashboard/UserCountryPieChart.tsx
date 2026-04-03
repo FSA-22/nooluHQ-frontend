@@ -1,6 +1,6 @@
 'use client';
 
-import { useDashboardStore } from '@/lib/store/useDashboardStore';
+import { useDashboard } from '@/hooks/useDashboard';
 import {
   PieChart,
   Pie,
@@ -32,9 +32,9 @@ const CustomTooltip = ({ active, payload }: any) => {
 
   const { country, users, percent } = payload[0].payload;
 
-  const { stats, loading, error, fetchDashboard } = useDashboardStore();
+  const { dashboardStats, loading, error } = useDashboard();
 
-  console.log('stats', stats);
+  console.log('stats', dashboardStats);
 
   return (
     <div className="bg-primaryDeep shadow-lg rounded-xl px-4 py-2">

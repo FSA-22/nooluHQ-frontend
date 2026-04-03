@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,21 +12,35 @@ import { ChevronLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { verifyEmailOtp, resendEmailOtp } from '@/lib/services/onboarding';
-
 import { getErrorMessage } from '@/utils/getErrorMessage';
 
 const OTP_LENGTH = 6;
 
 const VerifyEmail = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const email = searchParams.get('email') || '';
+  const sessionId = searchParams.get('sessionId') || '';
 
   const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(''));
   const [timer, setTimer] = useState(30);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
-  // countdown
+  // =========================
+  // Guard: sessionId required
+  // =========================
+  useEffect(() => {
+    if (!sessionId) {
+      toast.error('Session expired. Please register again.');
+      router.replace('/register');
+    }
+  }, [sessionId, router]);
+
+  // Timer
   useEffect(() => {
     if (timer === 0) return;
     const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
@@ -48,9 +62,9 @@ const VerifyEmail = () => {
       inputsRef.current[index + 1]?.focus();
     }
 
-    // 🔥 auto-submit when complete
-    if (newOtp.join('').length === OTP_LENGTH) {
-      handleSubmit(newOtp.join(''));
+    const joined = newOtp.join('');
+    if (joined.length === OTP_LENGTH) {
+      handleSubmit(joined);
     }
   };
 
@@ -69,8 +83,8 @@ const VerifyEmail = () => {
 
     const values = paste.split('');
     setOtp(values);
-    inputsRef.current[OTP_LENGTH - 1]?.focus();
 
+    inputsRef.current[OTP_LENGTH - 1]?.focus();
     handleSubmit(paste);
   };
 
@@ -84,27 +98,34 @@ const VerifyEmail = () => {
     try {
       setIsSubmitting(true);
 
-      await verifyEmailOtp({ otp: finalCode });
+      await verifyEmailOtp({
+        otp: finalCode,
+        sessionId,
+      });
 
       toast.success('Email verified successfully');
       router.push('/profile');
     } catch (err: any) {
       toast.error(getErrorMessage(err));
-      toast.error(err.message || 'Invalid code');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const resendCode = async () => {
-    if (timer > 0) return;
+    if (timer > 0 || !sessionId) return;
 
     try {
-      await resendEmailOtp();
+      setIsResending(true);
+
+      await resendEmailOtp(sessionId);
+
       setTimer(30);
       toast.success('Code resent');
     } catch (err: any) {
-      toast.error(err.message || 'Failed to resend code');
+      toast.error(getErrorMessage(err));
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -116,7 +137,6 @@ const VerifyEmail = () => {
       }}
       className="mx-auto flex-center flex-col h-full max-w-md w-full px-4"
     >
-      {/* HEADER */}
       <div className="flex items-center justify-between w-full mb-6">
         <Button
           type="button"
@@ -129,21 +149,20 @@ const VerifyEmail = () => {
           Back
         </Button>
 
-        <span className="text-sm text-muted-foreground">1/4</span>
+        <span className="text-sm text-muted-foreground">2/4</span>
       </div>
 
       <Textbox
         title="Verify email address"
-        desc="Enter the 6-digit code sent to your email"
+        desc={`Enter the 6-digit code sent to ${email}`}
       />
 
-      {/* OTP */}
       <div
         className="flex justify-between w-full gap-2 mt-6"
         onPaste={handlePaste}
       >
         {otp.map((digit, index) => (
-          <div key={index} className="flex flex-col items-center">
+          <div key={index}>
             <Input
               inputMode="numeric"
               maxLength={1}
@@ -160,7 +179,6 @@ const VerifyEmail = () => {
         ))}
       </div>
 
-      {/* RESEND */}
       <div className="flex justify-end py-4 w-full text-xs">
         {timer > 0 ? (
           <span className="text-muted-foreground">Resend in {timer}s</span>
@@ -168,15 +186,15 @@ const VerifyEmail = () => {
           <Button
             type="button"
             variant="link"
-            className="text-primaryNorma text-xs px-1"
+            disabled={isResending}
             onClick={resendCode}
+            className="text-primaryNorma text-xs px-1"
           >
-            Resend code
+            {isResending ? 'Resending...' : 'Resend code'}
           </Button>
         )}
       </div>
 
-      {/* SUBMIT */}
       <Button
         type="submit"
         disabled={isSubmitting}

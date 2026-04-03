@@ -141,23 +141,23 @@ const LoginForm = () => {
             {form.formState.isSubmitting || loading ? 'Login in...' : 'Login'}
           </Button>
           <div className="flex mx-auto text-center flex-col w-full">
-            <div className="w-full mx-auto flex flex-col text-xs space-y-1">
+            <div className="w-full mx-auto flex flex-col text-[11px] space-y-1">
               <div className="flex-center gap-1">
                 Don&apos;t have an account?
                 <Link
                   href={'/register'}
-                  className="text-primaryNorma desc-text text-xs"
+                  className="text-primaryNorma desc-text text-[11px]"
                 >
                   Register
                 </Link>
               </div>
-              <div className="flex-center w-full desc-text text-xs mt-2">
+              <div className="flex-center justify-around w-full desc-text text-[11px] mt-2">
                 <span> By creating an account. I agree to MayK's AI </span>
                 <Link
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className=" text-primaryNorma ml-1 text-xs"
+                  className=" text-primaryNorma text-[11px]"
                 >
                   Terms of Use
                 </Link>
@@ -166,9 +166,8 @@ const LoginForm = () => {
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className=" text-primaryNorma text-xs"
+                  className=" text-primaryNorma text-[11px]"
                 >
-                  {' '}
                   Privacy Policy
                 </Link>
               </div>

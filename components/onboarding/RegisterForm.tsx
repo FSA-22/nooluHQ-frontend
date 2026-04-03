@@ -1,32 +1,30 @@
+// ===============================
+// RegisterForm.tsx
+// ===============================
 'use client';
 
 import * as z from 'zod';
 import { accountFormSchema } from '@/schemas/onboarding.schema';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import Link from 'next/link';
 
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
+import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field';
+import Textbox from '../shared/Textbox';
+import LoginWithGoogle from '../GoogleButton';
 
 import { registerAccount } from '@/lib/services/onboarding';
-import { useRouter } from 'next/navigation';
-
-import { Input } from '@/components/ui/input';
-import Textbox from '../shared/Textbox';
-
-import { toast } from 'sonner';
-import Link from 'next/link';
 import { getErrorMessage } from '@/utils/getErrorMessage';
-
-import LoginWithGoogle from '../GoogleButton';
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -47,33 +45,28 @@ const RegisterForm = () => {
 
   const onSubmit = async (data: z.infer<typeof accountFormSchema>) => {
     try {
-      await registerAccount(data);
+      const res = await registerAccount(data);
 
       toast.success('Account created successfully');
-      form.reset();
 
-      router.push('/verify-email');
+      router.push(
+        `/verify-email?email=${encodeURIComponent(data.email)}&sessionId=${res.sessionId}`,
+      );
     } catch (error: any) {
       const message = getErrorMessage(error);
-
-      form.setError('root', {
-        type: 'server',
-        message,
-      });
-
+      form.setError('root', { type: 'server', message });
       toast.error(message);
     }
   };
-
   return (
-    <section className="w-full mx-auto my-auto py-8 max-w-md">
-      {/* step indicator */}
+    <section className="w-full mx-auto py-2 h-screen space-y-2 mt-10 max-w-md">
+      {/* Step indicator */}
       <div className="w-full flex justify-end">
         <span className="desc-text text-xs mt-6 text-darkGrey">1/4</span>
       </div>
 
-      <div className="max-w-xl">
-        <CardHeader className="p-0">
+      <div className="max-w-md">
+        <CardHeader className="py-1 px-0">
           <CardTitle>
             <Textbox
               title="Let's start with the basics"
@@ -96,18 +89,15 @@ const RegisterForm = () => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="email">Email address</FieldLabel>
-
                     <Input
                       {...field}
                       id="email"
                       type="email"
-                      name="email"
                       placeholder="Your email address"
                       autoComplete="email"
                       aria-invalid={fieldState.invalid}
-                      className="input-field h-10"
+                      className="input-field h-9"
                     />
-
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -122,18 +112,15 @@ const RegisterForm = () => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="password">Create password</FieldLabel>
-
                     <Input
                       {...field}
                       id="password"
                       type="password"
-                      name="password"
                       placeholder="Create your password"
                       autoComplete="new-password"
                       aria-invalid={fieldState.invalid}
-                      className="input-field h-10"
+                      className="input-field h-9"
                     />
-
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -150,18 +137,15 @@ const RegisterForm = () => {
                     <FieldLabel htmlFor="confirmPassword">
                       Confirm password
                     </FieldLabel>
-
                     <Input
                       {...field}
                       id="confirmPassword"
                       type="password"
-                      name="confirmPassword"
                       placeholder="Confirm your password"
                       autoComplete="new-password"
                       aria-invalid={fieldState.invalid}
-                      className="input-field h-10"
+                      className="input-field h-9"
                     />
-
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -173,7 +157,7 @@ const RegisterForm = () => {
         </CardContent>
 
         {/* SUBMIT BUTTON */}
-        <div className="space-y-2 mt-4 w-full">
+        <div className="space-y-1 mt-3 w-full">
           <Button
             disabled={isSubmitting}
             type="submit"
@@ -182,64 +166,48 @@ const RegisterForm = () => {
           >
             {isSubmitting ? 'Creating...' : 'Create account'}
           </Button>
-          <div className="flex mx-auto text-center flex-col w-full">
-            <div className="w-full mx-auto flex flex-col text-xs space-y-1">
-              <div className="flex-center gap-1">
-                Already have an account?
-                <Link
-                  href={'/login'}
-                  className="text-primaryNorma desc-text text-xs"
-                >
-                  Login
-                </Link>
-              </div>
-              <div className="flex-center w-full desc-text text-xs">
-                By creating an account. I agree to MayK's AI
-                <Link
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className=" text-primaryNorma ml-1 text-xs"
-                >
-                  Terms of Use
-                </Link>
-                and
-                <Link
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className=" text-primaryNorma text-xs"
-                >
-                  {' '}
-                  Privacy Policy
-                </Link>
-              </div>
+
+          <div className="flex flex-col text-[11px] w-full mt-1 mx-auto space-y-1 text-center">
+            <div className="flex-center desc-text text-[11px] gap-1">
+              Already have an account?
+              <Link
+                href="/login"
+                className="text-primaryNorma desc-text text-[11px]"
+              >
+                Login
+              </Link>
+            </div>
+            <div className="flex-center justify-around w-full desc-text text-[11px]">
+              By creating an account, I agree to MayK's AI
+              <Link
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primaryNorma text-[11px]"
+              >
+                Terms of Use
+              </Link>
+              and
+              <Link
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primaryNorma text-xs"
+              >
+                Privacy Policy
+              </Link>
             </div>
           </div>
 
           {/* OR DIVIDER */}
-          <div className="flex items-center w-xs mx-auto gap-4">
+          <div className="flex items-center w-xs mx-auto gap-4 my-2">
             <div className="flex-1 border-t border-gray-200" />
-            <span className="desc-text text-sm">OR</span>
+            <span className="desc-text text-xs">OR</span>
             <div className="flex-1 border-t border-gray-200" />
           </div>
+
           {/* GOOGLE BUTTON */}
-
           <LoginWithGoogle />
-
-          {/* <Button
-            type="button"
-            variant="outline"
-            className="w-full py-5 flex-center gap-3 text-darkGrey rounded-1"
-          >
-            <Image
-              width={18}
-              height={18}
-              alt="Google icon"
-              src="/icons/google-icon.svg"
-            />
-            Continue with Google
-          </Button> */}
         </div>
       </div>
     </section>

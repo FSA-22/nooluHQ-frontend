@@ -7,6 +7,7 @@ export interface OnboardingFormProps {
 export interface TextBoxProps {
   title: string;
   desc: string;
+  className?: string;
 }
 
 export interface StepperProps {

@@ -1,4 +1,3 @@
-// components/OnboardingStepper.tsx
 import { ONBOARDING_STEPS } from '@/constants';
 import { StepperProps } from '@/types';
 

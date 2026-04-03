@@ -6,59 +6,39 @@ export async function registerAccount(data: {
   confirmPassword: string;
 }) {
   try {
-    const res = await axios.post('/api/auth/register', data, {
+    const res = await axios.post('/api/onboarding/register', data, {
       withCredentials: true,
     });
 
-    console.log('Registered:', res.data);
-
     return res.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Registration failed');
-    }
-    throw new Error('Registration failed');
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || 'Registration failed');
   }
 }
-
-export async function verifyEmailOtp(data: { otp: string }) {
+export async function verifyEmailOtp(data: { otp: string; sessionId: string }) {
   try {
-    const res = await axios.post('/api/auth/verify-email', data, {
+    const res = await axios.post('/api/onboarding/verify-otp', data, {
       withCredentials: true,
     });
 
-    console.log('OTP verified:', res.data);
-
     return res.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(
-        error.response?.data?.message || 'OTP verification failed',
-      );
-    }
-    throw new Error('OTP verification failed');
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.error || 'Verification failed');
   }
 }
-
-export async function resendEmailOtp() {
+export async function resendEmailOtp(sessionId: string) {
   try {
     const res = await axios.post(
       '/api/onboarding/resend-otp',
-      {},
+      { sessionId },
       { withCredentials: true },
     );
 
-    console.log('OTP resent:', res.data);
-
     return res.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Resend OTP failed');
-    }
-    throw new Error('Resend OTP failed');
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message || 'Resend failed');
   }
 }
-
 export async function setupProfile(data: {
   name: string;
   role: string;
